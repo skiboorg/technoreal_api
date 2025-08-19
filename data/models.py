@@ -1,4 +1,5 @@
 from django.db import models
+from django_resized import ResizedImageField
 from pytils.translit import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
 
@@ -21,6 +22,7 @@ class ClientReview(models.Model):
         return self.client_name
 
 class Variant(models.Model):
+    cover = models.ImageField("Фото", upload_to="services/variant/", blank=True, null=True)
     name = models.CharField('Название', max_length=255)
     text = models.TextField('Материал')
     text1 = models.TextField('Результат работы')
@@ -96,8 +98,22 @@ class ProjectGalleryImage(models.Model):
     project = models.ForeignKey("Project", on_delete=models.CASCADE, related_name="gallery_images", verbose_name="Проект")
     image = models.ImageField("Фото галереи", upload_to="projects/gallery/")
 
+    class Meta:
+        verbose_name_plural = 'Галерея вниз'
+
     def __str__(self):
         return f"Gallery image for {self.project.name}"
+
+
+class ProjectGalleryImage1(models.Model):
+    project = models.ForeignKey("Project", on_delete=models.CASCADE, related_name="gallery_images1", verbose_name="Проект")
+    image = models.ImageField("Фото галереи", upload_to="projects/gallery1/")
+
+    class Meta:
+        verbose_name_plural = 'Галерея дополнительная'
+
+    def __str__(self):
+        return f"Gallery1 image for {self.project.name}"
 
 
 class Project(models.Model):
@@ -129,3 +145,44 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+
+
+class NewsItem(models.Model):
+    order_num = models.IntegerField(default=1, null=True)
+    cover = models.ImageField('Картинка превью', upload_to='news/images',blank=False, null=True)
+
+    name = models.CharField('Название', max_length=255, blank=False, null=True)
+    slug = models.CharField('ЧПУ',max_length=255,
+                            help_text='Если не заполнено, создается на основе поля Назавание',
+                            blank=True, null=True, editable=False)
+    content = RichTextUploadingField('Редактор', blank=True, null=True)
+    show_on_main = models.BooleanField("Показывать на главной", default=False)
+    created = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        ordering = ('order_num',)
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Новости'
+
+    def save(self, *args, **kwargs):
+
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+class Image(models.Model):
+    news_item = models.ForeignKey(NewsItem, on_delete=models.CASCADE, related_name='images')
+    image = models.FileField('Картинка', upload_to='news/images', blank=False, null=True)
+
+
+class CallbackForm(models.Model):
+    name = models.CharField('Имя',max_length=255,blank=False, null=True)
+    phone= models.CharField('Телефон',max_length=255,blank=False, null=True)
+    text = models.TextField('Текст',blank=True, null=True)
+    file= models.FileField('Файл',upload_to='forms',blank=True, null=True)
+    is_done = models.BooleanField('Обработана', default=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)

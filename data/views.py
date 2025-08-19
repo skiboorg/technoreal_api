@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import ClientReview, Service, Project
 from .serializers import *
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 # ===========================
 # ClientReview
@@ -60,3 +62,27 @@ class ProjectDetailAPIView(generics.RetrieveAPIView):
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
     lookup_field = 'slug'
+
+
+class GetNews(generics.ListAPIView):
+    serializer_class = NewsItemShortSerializer
+    def get_queryset(self):
+        for_index_param = self.request.GET.get('index', None)
+        for_index = True if for_index_param.lower() == 'true' else False
+        if for_index:
+            queryset = NewsItem.objects.filter(show_on_main=True)
+        else:
+            queryset = NewsItem.objects.all()
+        return queryset
+
+
+class GetNewsItem(generics.RetrieveAPIView):
+    serializer_class = NewsItemSerializer
+    queryset = NewsItem.objects.filter()
+    lookup_field = 'slug'
+
+
+class NewForm(generics.CreateAPIView):
+    queryset = CallbackForm
+    serializer_class = CallbackFormSerializer
+    parser_classes = [MultiPartParser, FormParser]

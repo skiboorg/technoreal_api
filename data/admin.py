@@ -23,13 +23,17 @@ class ProjectGalleryImageInline(admin.TabularInline):
     model = ProjectGalleryImage
     extra = 1
 
+class ProjectGallery1ImageInline(admin.TabularInline):
+    model = ProjectGalleryImage1
+    extra = 1
+
 # ===========================
 # Project Admin
 # ===========================
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'show_on_main')
-    inlines = [ProjectResultInline, ProjectGalleryImageInline]
+    inlines = [ProjectResultInline, ProjectGalleryImageInline,ProjectGallery1ImageInline]
     filter_horizontal = ('services',)  # удобно выбирать связанные услуги
 
 # ===========================
@@ -58,3 +62,17 @@ class VariantOptionlineForService(admin.TabularInline):
 class VariantAdmin(admin.ModelAdmin):
     list_display = ('name',)
     inlines = [VariantOptionlineForService]
+
+class NewsImageInline(admin.TabularInline):
+    model = Image
+    extra = 1
+
+@admin.register(NewsItem)
+class NewsItemAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    inlines = [NewsImageInline]
+
+
+@admin.register(CallbackForm)
+class CallbackFormAdmin(admin.ModelAdmin):
+    list_display = ('name','is_done')

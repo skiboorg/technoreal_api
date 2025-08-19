@@ -17,16 +17,27 @@ class ProgectServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = "__all__"
 
+class ProjectMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['name', 'slug', 'cover']
+
+
 class ProjectSerializer(serializers.ModelSerializer):
     results = ProjectResultSerializer(many=True, read_only=True)
     gallery_images = ProjectGalleryImageSerializer(many=True, read_only=True)
+    gallery_images1 = ProjectGalleryImageSerializer(many=True, read_only=True)
     services = ProgectServiceSerializer(many=True, read_only=True)
+    others = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
         fields = "__all__"
 
-
+    def get_others(self, obj):
+        # Берём любые 2 проекта, кроме текущего
+        qs = Project.objects.exclude(id=obj.id).only('name', 'slug', 'cover')[:2]
+        return ProjectMiniSerializer(qs, many=True).data
 
 class ProjectShortSerializer(serializers.ModelSerializer):
     gallery_images = ProjectGalleryImageSerializer(many=True, read_only=True)
@@ -71,3 +82,39 @@ class ClientReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientReview
         fields = "__all__"
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = '__all__'
+
+class NewsItemShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewsItem
+        exclude = ['content']
+
+
+class NewsItemSerializer(serializers.ModelSerializer):
+    images = ImageSerializer(many=True)
+    others = serializers.SerializerMethodField()
+    class Meta:
+        model = NewsItem
+        fields = '__all__'
+
+    def get_others(self, obj):
+        # Берём любые 2 проекта, кроме текущего
+        qs = NewsItem.objects.exclude(id=obj.id).only('name', 'slug', 'created')[:2]
+        return NewsItemShortSerializer(qs, many=True).data
+
+
+class CallbackFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CallbackForm
+        fields = '__all__'
+
+        extra_kwargs = {
+            "name": {"error_messages": {"required": "Имя обязательное поле"}, 'required': True},
+            'phone': {"error_messages": {"required": "Телефон обязательное поле"},'required': True},
+            'file': {'required': False},
+        }

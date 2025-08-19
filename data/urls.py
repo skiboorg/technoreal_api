@@ -1,9 +1,5 @@
 from django.urls import path
-from .views import (
-    ClientReviewListAPIView,
-    ServiceListAPIView, ServiceDetailAPIView,
-    ProjectListAPIView, ProjectDetailAPIView,
-)
+from .views import *
 
 urlpatterns = [
     # ClientReview
@@ -16,4 +12,8 @@ urlpatterns = [
     # Project
     path('projects/', ProjectListAPIView.as_view(), name='project-list'),
     path('projects/<slug>/', ProjectDetailAPIView.as_view(), name='project-detail'),
+
+    path('news/', GetNews.as_view()),
+    path('news/<slug>/', GetNewsItem.as_view()),
+    path('form', NewForm.as_view()),
 ]
