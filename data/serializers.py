@@ -18,9 +18,10 @@ class ProgectServiceSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class ProjectMiniSerializer(serializers.ModelSerializer):
+    services = ProgectServiceSerializer(many=True, read_only=True)
     class Meta:
         model = Project
-        fields = ['name', 'slug', 'cover']
+        fields = ['name', 'slug', 'cover','services']
 
 
 class ProjectSerializer(serializers.ModelSerializer):
