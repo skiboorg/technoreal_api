@@ -124,6 +124,7 @@ class Project(models.Model):
     cover = models.ImageField("Обложка", upload_to="projects/covers/")
     large_photo_1 = models.ImageField("Фото большое 1", upload_to="projects/large_photos/", blank=True, null=True)
     large_photo_2 = models.ImageField("Фото большое 2", upload_to="projects/large_photos/", blank=True, null=True)
+    large_photo_3 = models.ImageField("Фото большое 3", upload_to="projects/large_photos/", blank=True, null=True)
     heading = models.CharField("Заголовок", max_length=255, blank=True)
     heading_1 = models.CharField("Заголовок 1", max_length=255, blank=True)
     text_1 = models.TextField("Текст 1", blank=True)
