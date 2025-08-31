@@ -66,19 +66,39 @@ class ServiceGalleryImageSerializer(serializers.ModelSerializer):
         model = ServiceGalleryImage
         fields = "__all__"
 
+class ServiceSliderImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceSliderImage
+        fields = "__all__"
+
 class ServiceSerializer(serializers.ModelSerializer):
     images = ServiceGalleryImageSerializer(many=True, read_only=True)
+    slider_images = ServiceSliderImageSerializer(many=True, read_only=True)
     projects = ProjectSerializer(many=True, read_only=True)
     variants = VariantSerializer(many=True, read_only=True)
+    cover = serializers.SerializerMethodField()
     class Meta:
         model = Service
         fields = "__all__"
+
+    def get_cover(self, obj):
+        qs = obj.slider_images.filter(is_main=True)
+        if qs.exists():
+            return qs.first().image.url
+
 
 class ServiceShortSerializer(serializers.ModelSerializer):
-
+    slider_images = ServiceSliderImageSerializer(many=True, read_only=True)
+    cover = serializers.SerializerMethodField()
     class Meta:
         model = Service
         fields = "__all__"
+
+    def get_cover(self, obj):
+        qs = obj.slider_images.filter(is_main=True)
+        if qs.exists():
+            return qs.first().image.url
+
 class ClientReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientReview

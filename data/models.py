@@ -43,7 +43,7 @@ class Service(models.Model):
     order = models.PositiveIntegerField("Порядок вывода", default=0)
     name = models.CharField("Название услуги", max_length=255)
     slug = models.CharField("Название услуги", max_length=255, editable=False)
-    cover = models.ImageField("Обложка", upload_to="services/covers/")
+    # cover = models.ImageField("Обложка", upload_to="services/covers/")
     short_description = models.TextField("Короткое описание", blank=True)
     production_time = models.TextField("Сроки изготовления", blank=True)
     heading_1 = models.TextField("Заголовок 1", blank=True)
@@ -73,6 +73,13 @@ class ServiceGalleryImage(models.Model):
 
     def __str__(self):
         return f"Gallery image for {self.service.name}"
+
+class ServiceSliderImage(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name="slider_images", verbose_name="Проект")
+    image = models.ImageField("Фото слайдера", upload_to="service/gallery/")
+    is_main = models.BooleanField("Главный", default=False, null=False)
+    def __str__(self):
+        return f"Slider image for {self.service.name}"
 # ===========================
 # Проекты
 # ===========================

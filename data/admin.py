@@ -47,10 +47,14 @@ class ServiceGalleryImageInlineForService(admin.TabularInline):
     model = ServiceGalleryImage  # связь ManyToMany через промежуточную таблицу
     extra = 1
 
+class ServiceSliderImageInlineForService(admin.TabularInline):
+    model = ServiceSliderImage  # связь ManyToMany через промежуточную таблицу
+    extra = 1
+
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('order', 'name', 'show_on_main')
-    inlines = [ProjectInlineForService,ServiceGalleryImageInlineForService]
+    inlines = [ProjectInlineForService,ServiceGalleryImageInlineForService,ServiceSliderImageInlineForService]
     ordering = ('order',)
     filter_horizontal = ('projects',)
 
