@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
 from pathlib import Path
-
+import settings
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,6 +31,11 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 
 SITE_URL = 'http://127.0.0.1:8000'
 
+EMAIL_HOST_USER = settings.SMTP_USER
+EMAIL_HOST_PASSWORD = settings.SMTP_PASSWORD
+EMAIL_HOST = settings.SMTP_SERVER
+EMAIL_PORT = 1127
+EMAIL_USE_SSL = True
 
 # Application definition
 

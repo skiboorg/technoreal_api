@@ -2,6 +2,10 @@ from django.db import models
 from django_resized import ResizedImageField
 from pytils.translit import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
+from django.db.models.signals import post_save
 
 # ===========================
 # Отзывы клиентов
@@ -47,7 +51,9 @@ class Service(models.Model):
     short_description = models.TextField("Короткое описание", blank=True)
     production_time = models.TextField("Сроки изготовления", blank=True)
     heading_1 = models.TextField("Заголовок 1", blank=True)
+    target_audience_title = models.TextField("Для кого заголовок", blank=True)
     target_audience = models.TextField("Для кого", blank=True)
+    recommendation_title = models.TextField("Рекомендация заголовок", blank=True)
     recommendation = models.TextField("Рекомендация", blank=True)
     heading_implementation = models.TextField("Заголовок 'Реализация'", blank=True)
     large_photo = models.ImageField("Фото большое 1", upload_to="services/large_photos/", blank=True, null=True)
@@ -194,3 +200,24 @@ class CallbackForm(models.Model):
     file= models.FileField('Файл',upload_to='forms',blank=True, null=True)
     is_done = models.BooleanField('Обработана', default=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+# def form_post_save(sender, instance, created, **kwargs):
+#     if created:
+#         msg_html = render_to_string('form_email.html', {
+#             'name': instance.name,
+#             'phone': instance.phone,
+#             'text': instance.text,
+#             'file': instance.file.url if instance.file else None,
+#             'created_at': instance.created_at,
+#         })
+#
+#         send_mail(
+#             subject='Новая заявка с формы обратной связи',
+#             message='',  # оставляем пустым, так как используем html_message
+#             from_email='noreply@sh44.ru',
+#             recipient_list=['manager@sh44.ru'],  # сюда можно список адресов
+#             fail_silently=False,
+#             html_message=msg_html
+#         )
+# post_save.connect(form_post_save, sender=CallbackForm)
