@@ -202,22 +202,22 @@ class CallbackForm(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-# def form_post_save(sender, instance, created, **kwargs):
-#     if created:
-#         msg_html = render_to_string('form_email.html', {
-#             'name': instance.name,
-#             'phone': instance.phone,
-#             'text': instance.text,
-#             'file': instance.file.url if instance.file else None,
-#             'created_at': instance.created_at,
-#         })
-#
-#         send_mail(
-#             subject='Новая заявка с формы обратной связи',
-#             message='',  # оставляем пустым, так как используем html_message
-#             from_email='noreply@sh44.ru',
-#             recipient_list=['manager@sh44.ru'],  # сюда можно список адресов
-#             fail_silently=False,
-#             html_message=msg_html
-#         )
-# post_save.connect(form_post_save, sender=CallbackForm)
+def form_post_save(sender, instance, created, **kwargs):
+    if created:
+        msg_html = render_to_string('form_email.html', {
+            'name': instance.name,
+            'phone': instance.phone,
+            'text': instance.text,
+            'file': instance.file.url if instance.file else None,
+            'created_at': instance.created_at,
+        })
+
+        send_mail(
+            subject='Новая заявка с формы обратной связи',
+            message='',  # оставляем пустым, так как используем html_message
+            from_email='noreply@texnoreal.com',
+            recipient_list=['info@texnoreal.com'],  # сюда можно список адресов
+            fail_silently=False,
+            html_message=msg_html
+        )
+post_save.connect(form_post_save, sender=CallbackForm)
