@@ -43,6 +43,11 @@ class ServiceDetailAPIView(generics.RetrieveAPIView):
 # ===========================
 # Project
 # ===========================
+class HomeGalleryListAPIView(generics.ListAPIView):
+    serializer_class = HomeGalleryImageSerializer
+    queryset = HomeGalleryImage.objects.all()
+
+
 class ProjectListAPIView(generics.ListAPIView):
     serializer_class = ProjectShortSerializer
 

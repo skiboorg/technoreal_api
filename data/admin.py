@@ -80,3 +80,7 @@ class NewsItemAdmin(admin.ModelAdmin):
 @admin.register(CallbackForm)
 class CallbackFormAdmin(admin.ModelAdmin):
     list_display = ('name','is_done')
+
+@admin.register(HomeGalleryImage)
+class HomeGalleryImageAdmin(admin.ModelAdmin):
+    list_display = ('id',)

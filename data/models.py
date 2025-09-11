@@ -221,3 +221,10 @@ def form_post_save(sender, instance, created, **kwargs):
             html_message=msg_html
         )
 post_save.connect(form_post_save, sender=CallbackForm)
+
+
+class HomeGalleryImage(models.Model):
+    image = models.ImageField("Фото галереи на главной", upload_to="home/gallery/")
+
+    def __str__(self):
+        return f"Изображение для слайде на главной"
