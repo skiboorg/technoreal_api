@@ -60,7 +60,9 @@ class Service(models.Model):
     large_photo_1 = models.ImageField("Фото большое 2", upload_to="services/large_photos/", blank=True, null=True)
     show_on_main = models.BooleanField("Показывать на главной", default=False)
     projects = models.ManyToManyField("Project", blank=True, related_name="services_attached", verbose_name="Прикрепленные проекты")
-
+    page_title = models.TextField("TITLE", blank=True, null=True)
+    page_description = models.TextField("DESCRIPTION", blank=True, null=True)
+    content = RichTextUploadingField('HTML контент', blank=True, null=True)
     class Meta:
         ordering = ["order"]
         verbose_name = "Услуга"
@@ -148,7 +150,9 @@ class Project(models.Model):
     client_position = models.CharField("Должность клиента", max_length=255, blank=True)
     client_photo = models.ImageField("Фото клиента", upload_to="projects/clients/", blank=True, null=True)
     show_on_main = models.BooleanField("Показывать на главной", default=False)
-
+    page_title = models.TextField("TITLE", blank=True, null=True)
+    page_description = models.TextField("DESCRIPTION", blank=True, null=True)
+    content = RichTextUploadingField('HTML контент', blank=True, null=True)
     class Meta:
         verbose_name = "Проект"
         verbose_name_plural = "Проекты"
