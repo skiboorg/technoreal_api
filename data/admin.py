@@ -84,3 +84,8 @@ class CallbackFormAdmin(admin.ModelAdmin):
 @admin.register(HomeGalleryImage)
 class HomeGalleryImageAdmin(admin.ModelAdmin):
     list_display = ('id',)
+
+
+@admin.register(SEOPage)
+class SEOPageAdmin(admin.ModelAdmin):
+    list_display = ('slug',)

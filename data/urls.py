@@ -16,5 +16,6 @@ urlpatterns = [
 
     path('news/', GetNews.as_view()),
     path('news/<slug>/', GetNewsItem.as_view()),
+    path('seo/<slug>/', SEOPageViewSet.as_view()),
     path('form', NewForm.as_view()),
 ]

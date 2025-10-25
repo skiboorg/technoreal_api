@@ -144,3 +144,9 @@ class CallbackFormSerializer(serializers.ModelSerializer):
             'phone': {"error_messages": {"required": "Телефон обязательное поле"},'required': True},
             'file': {'required': False},
         }
+
+
+class SEOPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SEOPage
+        fields = "__all__"

@@ -10,6 +10,7 @@ from django.db.models.signals import post_save
 # ===========================
 # Отзывы клиентов
 # ===========================
+
 class ClientReview(models.Model):
     order = models.PositiveIntegerField("Порядок вывода", default=0)
     text = models.TextField("Текст отзыва")
@@ -232,3 +233,20 @@ class HomeGalleryImage(models.Model):
 
     def __str__(self):
         return f"Изображение для слайде на главной"
+
+
+class SEOPage(models.Model):
+    slug = models.CharField(max_length=255, unique=True, help_text="Уникальный путь страницы (например: 'about' или 'contacts')")
+    title = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    keywords = models.TextField(blank=True, null=True)
+    og_title = models.CharField(max_length=255, blank=True, null=True)
+    og_description = models.TextField(blank=True, null=True)
+    og_image = models.ImageField(upload_to="seo/", blank=True, null=True)
+    content = RichTextUploadingField('Контент', blank=True, null=True)
+    class Meta:
+        verbose_name = "SEO для страницы"
+        verbose_name_plural = "SEO страницы"
+
+    def __str__(self):
+        return self.slug

@@ -91,3 +91,9 @@ class NewForm(generics.CreateAPIView):
     queryset = CallbackForm
     serializer_class = CallbackFormSerializer
     parser_classes = [MultiPartParser, FormParser]
+
+
+class SEOPageViewSet(generics.RetrieveAPIView):
+    queryset = SEOPage.objects.all()
+    serializer_class = SEOPageSerializer
+    lookup_field = "slug"
