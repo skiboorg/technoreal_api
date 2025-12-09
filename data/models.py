@@ -168,6 +168,8 @@ class Project(models.Model):
 
 
 class NewsItem(models.Model):
+    page_title = models.TextField("TITLE", blank=True, null=True)
+    page_description = models.TextField("DESCRIPTION", blank=True, null=True)
     order_num = models.IntegerField(default=1, null=True)
     cover = models.ImageField('Картинка превью', upload_to='news/images',blank=False, null=True)
 
