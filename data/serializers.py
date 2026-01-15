@@ -21,7 +21,7 @@ class ProgectServiceShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Service
-        fields = ['name']
+        fields = ['name','slug']
 
 class ProjectMiniSerializer(serializers.ModelSerializer):
     services = ProgectServiceSerializer(many=True, read_only=True)
