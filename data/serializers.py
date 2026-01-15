@@ -17,6 +17,12 @@ class ProgectServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = "__all__"
 
+class ProgectServiceShortSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Service
+        fields = ['name']
+
 class ProjectMiniSerializer(serializers.ModelSerializer):
     services = ProgectServiceSerializer(many=True, read_only=True)
     class Meta:
@@ -42,7 +48,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class ProjectShortSerializer(serializers.ModelSerializer):
     gallery_images = ProjectGalleryImageSerializer(many=True, read_only=True)
-    services = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    services = ProgectServiceShortSerializer(many=True, read_only=True)
     class Meta:
         model = Project
         fields = "__all__"
